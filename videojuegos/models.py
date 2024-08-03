@@ -35,6 +35,7 @@ class Inventario(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
     id_estado_producto = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_productos')
+    codigo_producto = models.CharField(max_length=10)
     
     def __str__(self):
         return f'{self.nombre}'

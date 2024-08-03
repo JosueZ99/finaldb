@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Consultar Cliente{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'videojuegos:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'videojuegos:clientes' %}">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Inventario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Ventas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Catálogos</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-md">
+    <h2 class="text-center mb-4">Detalles del Cliente</h2>
+    <div class="card p-4 shadow-sm">
+        <div class="card-body">
+            {% if cliente_info %}
+                <p><strong>Información del Cliente:</strong></p>
+                <ul>
+                    <li><strong>ID:</strong> {{ cliente_info.id }}</li>
+                    <li><strong>Cédula:</strong> {{ cliente_info.cedula }}</li>
+                    <li><strong>Apellidos y Nombres:</strong> {{ cliente_info.apellidos_nombres }}</li>
+                    <li><strong>Correo:</strong> {{ cliente_info.correo }}</li>
+                    <li><strong>Provincia:</strong> {{ cliente_info.provincia }}</li>
+                    <li><strong>Dirección:</strong> {{ cliente_info.direccion }}</li>
+                    <li><strong>Estado Cliente:</strong> {{ cliente_info.estado }}</li>
+                    <li><strong>Teléfono:</strong> {{ cliente_info.telefono }}</li>
+                </ul>
+            {% else %}
+                <p>{{ mensaje }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
