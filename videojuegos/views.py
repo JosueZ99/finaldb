@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.db import connection
 
-from .models import Clientes
+from .models import Clientes, Inventario
 from .forms import IngresarClientesForm, ActualizarClientesForm
 
 # Create your views here.
@@ -16,6 +16,11 @@ def clientes(request):
     clientes = Clientes.objects.order_by('id')
     template = loader.get_template('clientes.html')
     return HttpResponse(template.render({'clientes': clientes}, request))
+
+def inventario(request):
+    inventario = Inventario.objects.order_by('id')
+    template = loader.get_template('inventario.html')
+    return HttpResponse(template.render({'inventario': inventario}, request))
 
 def ingresar_cliente(request):
     if request.method == 'POST':
@@ -71,3 +76,26 @@ def actualizar_cliente(request, cedula):
         })
         
     return render(request, 'actualizar_cliente.html', {'form': form})
+
+def ingresar_inventario(request):
+    if request.method == 'POST':
+        form = IngresarInventarioForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            formato = form.cleaned_data['formato']
+            genero = form.cleaned_data['genero']
+            plataforma = form.cleaned_data['plataforma']
+            ano_lanzamiento = form.cleaned_data['ano_lanzamiento']
+            precio = form.cleaned_data['precio']
+            stock = form.cleaned_data['stock']
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL ingresar_inventario(%s, %s, %s, %s, %s, %s, %s)
+                """, [nombre, formato, genero, plataforma, ano_lanzamiento, precio, stock])
+                
+            return redirect('videojuegos:inventario')
+    else:
+        form = IngresarInventarioForm()
+        
+    return render(request, 'ingresar_inventario.html', {'form': form})
