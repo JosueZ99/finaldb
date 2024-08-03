@@ -24,6 +24,7 @@ class IngresarInventarioForm(forms.Form):
     stock = forms.IntegerField(label='Stock')
     
 class ActualizarInventarioForm(forms.Form):
+    codigo_producto = forms.CharField(label='Código del Producto', max_length=10)
     nombre = forms.CharField(label='Nombre del videojuego', max_length=100)
     formato = forms.CharField(label='Formato', max_length=100)
     genero = forms.CharField(label='Género', max_length=100)
