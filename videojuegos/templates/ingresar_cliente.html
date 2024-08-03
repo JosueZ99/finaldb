@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Ingreasr o actualizar cliente{% endblock title %}
+{% block title %} Ingresar cliente{% endblock title %}
 {% block content %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
@@ -31,13 +31,37 @@
     </div>
   </nav>
 
-<div class="container-md bg-info text-center">
-    <h2> Ingresar cliente</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+<div class="container-md">
+    <h2 class="text-center mb-4">Ingresar Cliente</h2>
+    <div class="card px-4 pt-4 shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_apellidos_nombres" class="form-label">Apellidos y Nombres</label>
+                    <input type="text" name="apellidos_nombres" id="id_apellidos_nombres" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_cedula" class="form-label">Cédula</label>
+                    <input type="text" name="cedula" id="id_cedula"  class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_correo" class="form-label">Correo Electrónico</label>
+                    <input type="text" name="correo" id="id_correo" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_direccion" class="form-label">Dirección</label>
+                    <input type="text" name="direccion" id="id_direccion" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_telefono" class="form-label">Teléfono</label>
+                    <input type="text" name="telefono" id="id_telefono"  class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+            </form>
+        </div>
+    </div>
+    <p></p>
 </div>
 
 {% endblock content %}

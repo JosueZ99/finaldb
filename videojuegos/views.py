@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template import loader
 from django.db import connection
 
@@ -38,11 +38,18 @@ def ingresar_cliente(request):
         
     return render(request, 'ingresar_cliente.html', {'form': form})
         
-def actualizar_cliente(request):
+def actualizar_cliente(request, cedula):
+    cliente = get_object_or_404(Clientes, cedula=cedula)
+    
     if request.method == 'POST':
-        form = ActualizarClientesForm(request.POST)
+        form = ActualizarClientesForm(request.POST, initial={
+            'cedula': cliente.cedula,
+            'apellidos_nombres': cliente.apellidos_nombres,
+            'correo': cliente.correo,
+            'direccion': cliente.direccion,
+            'telefono': cliente.telefono,
+        })
         if form.is_valid():
-            cedula = form.cleaned_data['cedula']
             apellidos_nombres = form.cleaned_data['apellidos_nombres']
             correo = form.cleaned_data['correo']
             direccion = form.cleaned_data['direccion']
@@ -55,6 +62,12 @@ def actualizar_cliente(request):
                 
             return redirect('videojuegos:clientes')
     else:
-        form = ActualizarClientesForm()
+        form = ActualizarClientesForm(initial={
+            'cedula': cliente.cedula,
+            'apellidos_nombres': cliente.apellidos_nombres,
+            'correo': cliente.correo,
+            'direccion': cliente.direccion,
+            'telefono': cliente.telefono,
+        })
         
     return render(request, 'actualizar_cliente.html', {'form': form})

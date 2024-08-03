@@ -34,7 +34,6 @@
 <div class="container-fluid">
     <h2 class="mb-3 text-center">Lista de Clientes</h2>
     <a href="{% url 'videojuegos:registro' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
-    <a href="{% url 'videojuegos:actualizacion' %}" class="btn btn-primary mb-4">Actualizar existente</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -46,6 +45,7 @@
                 <th>Provincia</th>
                 <th>Dirección</th>
                 <th>Estado del Cliente</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -59,6 +59,9 @@
                 <td>{{ cliente.provincia }}</td>
                 <td>{{ cliente.direccion }}</td>
                 <td>{{ cliente.id_estado_cliente}}</td>
+                <td><a href = "actualizar/{{cliente.cedula}}" class="btn btn-primary">
+					<i class="fa-solid fa-pencil"></i>
+				</a></td>
             </tr>
             {% endfor %}
         </tbody>
