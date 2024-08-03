@@ -1,60 +1,70 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Inicio{% endblock title %}
-
-{% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <a href="{% url 'videojuegos:clientes' %}" class="text-decoration-none">
-                <div class="card text-center" style="height: 400px;">
-                    <img src="{% static 'images/clientes.webp' %}" class="card-img-top" style="height: 300px;" alt="Clientes">
-                    <div class="card-body">
-                        <h5 class="card-title">Clientes</h5>
-                        <p class="card-text">Gestiona la información de los clientes registrados.</p>
-                        <span class="stretched-link"></span>
-                    </div>
+<html>
+    <head>
+      {% load static %}
+      <title>Inicio</title>
+      <link rel="stylesheet"  href="{% static "bootstrap.min.css" %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+      <div class="container-fluid">
+          <div class="bg-primary text-white p-4 text-center">
+              <img src="{%static "images/logo.png"%}" width="300px">
+          </div>
+          <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <a href="{% url 'videojuegos:clientes' %}" class="text-decoration-none">
+                        <div class="card text-center" style="height: 400px;">
+                            <img src="{% static 'images/clientes.webp' %}" class="card-img-top" style="height: 300px;" alt="Clientes">
+                            <div class="card-body">
+                                <h5 class="card-title">Clientes</h5>
+                                <p class="card-text">Gestiona la información de los clientes registrados.</p>
+                                <span class="stretched-link"></span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <a href="{% url 'videojuegos:inventario' %}" class="text-decoration-none">
-                <div class="card text-center" style="height: 400px;">
-                    <img src="{% static 'images/inventario.jpg' %}" class="card-img-top" style="height: 300px;" alt="Inventario">
-                    <div class="card-body">
-                        <h5 class="card-title">Inventario</h5>
-                        <p class="card-text">Administra los productos disponibles en el inventario.</p>
-                        <span class="stretched-link"></span>
-                    </div>
+                <div class="col-md-6 mb-4">
+                    <a href="{% url 'videojuegos:inventario' %}" class="text-decoration-none">
+                        <div class="card text-center" style="height: 400px;">
+                            <img src="{% static 'images/inventario.jpg' %}" class="card-img-top" style="height: 300px;" alt="Inventario">
+                            <div class="card-body">
+                                <h5 class="card-title">Inventario</h5>
+                                <p class="card-text">Administra los productos disponibles en el inventario.</p>
+                                <span class="stretched-link"></span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <a href="#" class="text-decoration-none">
-                <div class="card text-center" style="height: 400px;">
-                    <img src="{% static 'images/ventas.jpg' %}" class="card-img-top" style="height: 300px;" alt="Ventas">
-                    <div class="card-body">
-                        <h5 class="card-title">Ventas</h5>
-                        <p class="card-text">Consulta y gestiona las ventas realizadas.</p>
-                        <span class="stretched-link"></span>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <a href="{% url 'videojuegos:ventas' %}" class="text-decoration-none">
+                        <div class="card text-center" style="height: 400px;">
+                            <img src="{% static 'images/ventas.jpg' %}" class="card-img-top" style="height: 300px;" alt="Ventas">
+                            <div class="card-body">
+                                <h5 class="card-title">Ventas</h5>
+                                <p class="card-text">Consulta y gestiona las ventas realizadas.</p>
+                                <span class="stretched-link"></span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="col-md-6 mb-4">
-            <a href="{% url 'videojuegos:catalogos' %}" class="text-decoration-none">
-                <div class="card text-center" style="height: 400px;">
-                    <img src="{% static 'images/catalogos.jpg' %}" class="card-img-top" style="height: 300px;" alt="Catálogos">
-                    <div class="card-body">
-                        <h5 class="card-title">Catálogos</h5>
-                        <p class="card-text">Explora y administra los catálogos de productos.</p>
-                        <span class="stretched-link"></span>
-                    </div>
+                <div class="col-md-6 mb-4">
+                    <a href="{% url 'videojuegos:catalogos' %}" class="text-decoration-none">
+                        <div class="card text-center" style="height: 400px;">
+                            <img src="{% static 'images/catalogos.jpg' %}" class="card-img-top" style="height: 300px;" alt="Catálogos">
+                            <div class="card-body">
+                                <h5 class="card-title">Catálogos</h5>
+                                <p class="card-text">Explora y administra los catálogos de productos.</p>
+                                <span class="stretched-link"></span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
-    </div>
-</div>
-{% endblock content %}
+      </div>
+    </body>
+</html>

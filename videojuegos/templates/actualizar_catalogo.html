@@ -1,59 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %} Ingresar o actualizar Catalogo{% endblock title %}
+{% block title %}Actualizar Catálogo{% endblock title %}
+
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="{% url "videojuegos:index" %}">Home</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Clientes</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:inventario" %}">Inventario</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Ventas</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:catalogos" %}">Cat&aacute;logos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
-
 <div class="container-md">
-    <h2 class="text-center mb-4">Actualizar Catalogo</h2>
+
+    <h2 class="text-center mb-4">Actualizar Catálogo</h2>
+
     <div class="card px-4 pt-4 shadow-sm">
+
         <div class="card-body">
+
             <form method="POST">
                 {% csrf_token %}
+
                 <div class="mb-3">
                     <label for="id_id" class="form-label">ID</label>
-                    <input type="text" name="id" id="id_id" value="{{ form.id.value }}" class="form-control" readonly>
+                    <input type="text" name="id" id="id_id" value="{{ form.id.value|default:'' }}" class="form-control" readonly>
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_catalogo" class="form-label">Cat&aacute;logo</label>
-                    <input type="text" name="catalogo" id="id_catalogo" value="{{ form.catalogo.value }}" class="form-control">
+                    <label for="id_catalogo" class="form-label">Catálogo</label>
+                    <input type="text" name="catalogo" id="id_catalogo" value="{{ form.catalogo.value|default:'' }}" class="form-control"
+                           {% if form.catalogo.value == None %}readonly{% endif %}>
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_item_catalogo" class="form-label">Item Cat&aacute;logo</label>
-                    <input type="text" name="item_catalogo" id="id_item_catalogo" value="{{ form.item_catalogo.value }}" class="form-control">
+                    <label for="id_item_catalogo" class="form-label">Item Catálogo</label>
+                    <input type="text" name="item_catalogo" id="id_item_catalogo" value="{{ form.item_catalogo.value|default:'' }}" class="form-control"
+                           {% if form.item_catalogo.value == None %}readonly{% endif %}>
                 </div>
+
                 <button type="submit" class="btn btn-primary mt-3">Guardar</button>
             </form>
+
         </div>
+
     </div>
+
     <p></p>
+
 </div>
 
 {% endblock content %}

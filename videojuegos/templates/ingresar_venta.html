@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Ingresar Venta{% endblock title %}
+
+{% block content %}
+<div class="container-md">
+    <h2 class="text-center mb-4">Ingresar Nueva Venta</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Cédula del Cliente -->
+                <div class="mb-3">
+                    <label for="id_cedula_cliente" class="form-label">Cédula del Cliente</label>
+                    <input type="text" name="cedula_cliente" id="id_cedula_cliente" class="form-control" 
+                           value="{{ form.cedula_cliente.value|default_if_none:'' }}" 
+                           placeholder="Ingrese la cédula del cliente" required>
+                    {% if form.cedula_cliente.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.cedula_cliente.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Productos Comprados -->
+                <div class="mb-3">
+                    <label for="id_productos_comprados" class="form-label">Productos Comprados</label>
+                    <input type="text" name="productos_comprados" id="id_productos_comprados" class="form-control" 
+                           value="{{ form.productos_comprados.value|default_if_none:'' }}" 
+                           placeholder="Ingrese los productos comprados" required>
+                    {% if form.productos_comprados.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.productos_comprados.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Forma de Pago -->
+                <div class="mb-3">
+                    <label for="id_formas_pago" class="form-label">Forma de Pago</label>
+                    <div class="mt-2"> <!-- Add margin top here -->
+                        <select name="forma_pago" id="id_formas_pago" class="form-select">
+                            {% for choice in form.forma_pago.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.forma_pago.value == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.forma_pago.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.forma_pago.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

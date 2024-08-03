@@ -35,7 +35,7 @@ class Inventario(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
     id_estado_producto = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_productos', db_column='id_estado_producto')
-    codigo_producto = models.CharField(max_length=10, null= True)
+    codigo_producto = models.CharField(max_length=10)
     
     def __str__(self):
         return f'{self.nombre}'
@@ -44,16 +44,16 @@ class Inventario(models.Model):
         db_table = 'inventario'
 
 class Ventas(models.Model):
-    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE, related_name='ventas')
-    id_producto_1 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_1', null=True, blank=True)
+    id_cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE, related_name='ventas', db_column='id_cliente', default=0)
+    id_producto_1 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_1', null=True, blank=True, db_column='id_producto_1')
     cantidad_producto_1 = models.IntegerField(null=True, blank=True)
-    id_producto_2 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_2', null=True, blank=True)
+    id_producto_2 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_2', null=True, blank=True, db_column='id_producto_2')
     cantidad_producto_2 = models.IntegerField(null=True, blank=True)
-    id_producto_3 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_3', null=True, blank=True)
+    id_producto_3 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_3', null=True, blank=True, db_column='id_producto_3')
     cantidad_producto_3 = models.IntegerField(null=True, blank=True)
-    id_producto_4 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_4', null=True, blank=True)
+    id_producto_4 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_4', null=True, blank=True, db_column='id_producto_4')
     cantidad_producto_4 = models.IntegerField(null=True, blank=True)
-    id_producto_5 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_5', null=True, blank=True)
+    id_producto_5 = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='ventas_producto_5', null=True, blank=True, db_column='id_producto_5')
     cantidad_producto_5 = models.IntegerField(null=True, blank=True)
     fecha = models.DateField()
     
@@ -64,9 +64,9 @@ class Ventas(models.Model):
         db_table = 'ventas'
 
 class RegistroVentas(models.Model):
-    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE, related_name='registro_ventas')
-    id_forma_pago = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='formas_pago')
-    id_estado_venta = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_ventas')
+    id_productos_vendidos = models.ForeignKey(Ventas, on_delete=models.CASCADE, related_name='registro_ventas', db_column='id_productos_vendidos', default=0)
+    id_forma_pago = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='formas_pago', db_column='id_forma_pago')
+    id_estado_venta = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_ventas', db_column='id_estado_venta')
     
     def __str__(self):
         return f'Registro de venta {self.venta.id}'

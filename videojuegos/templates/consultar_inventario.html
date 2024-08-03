@@ -3,34 +3,6 @@
 {% block title %}Consultar Inventario{% endblock title %}
 
 {% block content %}
-
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'videojuegos:index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'videojuegos:clientes' %}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Inventario</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Ventas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Catálogos</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
 <div class="container-md">
     <h2 class="text-center mb-4">Consultar Inventario</h2>
     <div class="card p-4 shadow-sm">
@@ -38,33 +10,69 @@
             <form method="GET" action="{% url 'videojuegos:consultar_inventario' %}">
                 <div class="mb-3">
                     <label for="codigo_producto" class="form-label">Código:</label>
-                    <input type="text" class="form-control" id="codigo_producto" name="codigo_producto" placeholder="Ingrese el código del videojuego" required>
+                    <input type="text" class="form-control" id="codigo_producto" name="codigo_producto" placeholder="Ingrese el código del videojuego" value="{{ request.GET.codigo_producto }}" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </form>
             
-
             {% if inventario_info %}
-                <p class="mt-4"><strong>Información del Videojuego:</strong></p>
-                <ul>
-                    <li><strong>ID:</strong> {{ inventario_info.id }}</li>
-                    <li><strong>Código de producto:</strong> {{ inventario_info.codigo_producto }}</li>
-                    <li><strong>Nombre:</strong> {{ inventario_info.nombre }}</li>
-                    <li><strong>Formato:</strong> {{ inventario_info.formato }}</li>
-                    <li><strong>G&eacute;nero:</strong> {{ inventario_info.genero }}</li>
-                    <li><strong>Plataforma:</strong> {{ inventario_info.plataforma }}</li>
-                    <li><strong>A&ntilde;o de Lanzamiento:</strong> {{ inventario_info.ano_lanzamiento }}</li>
-                    <li><strong>Precio:</strong> {{ inventario_info.precio }}</li>
-                    <li><strong>Stock:</strong> {{ inventario_info.stock }}</li>
-                    <li><strong>Estado de Producto:</strong> {{ inventario_info.estado }}</li>
-                </ul>
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Información del Videojuego
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>ID</th>
+                                        <td>{{ inventario_info.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Código de producto</th>
+                                        <td>{{ inventario_info.codigo_producto }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <td>{{ inventario_info.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Formato</th>
+                                        <td>{{ inventario_info.formato }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Género</th>
+                                        <td>{{ inventario_info.genero }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Plataforma</th>
+                                        <td>{{ inventario_info.plataforma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Año de Lanzamiento</th>
+                                        <td>{{ inventario_info.ano_lanzamiento }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Precio</th>
+                                        <td>{{ inventario_info.precio }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <td>{{ inventario_info.stock }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estado de Producto</th>
+                                        <td>{{ inventario_info.estado }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             {% else %}
                 <p>{{ mensaje }}</p>
             {% endif %}
         </div>
     </div>
-
-    <p></p>
 </div>
-    
-    {% endblock content %}
+{% endblock content %}

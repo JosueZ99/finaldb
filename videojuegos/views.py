@@ -4,8 +4,8 @@ from django.template import loader
 from django.db import connection
 import psycopg2, re
 
-from .models import Clientes, Inventario, Catalogos
-from .forms import IngresarClientesForm, ActualizarClientesForm, IngresarInventarioForm, ActualizarInventarioForm, IngresarCatalogoForm, ActualizarCatalogoForm
+from .models import Clientes, Inventario, Catalogos, Ventas, RegistroVentas
+from .forms import IngresarClientesForm, ActualizarClientesForm, IngresarInventarioForm, ActualizarInventarioForm, IngresarCatalogoForm, ActualizarCatalogoForm, IngresarVentaForm
 
 # Create your views here.
 def index(request):
@@ -28,6 +28,16 @@ def catalogos(request):
     template = loader.get_template('catalogos.html')
     return HttpResponse(template.render({'catalogos': catalogos}, request))
 
+def ventas(request):
+    ventas = Ventas.objects.all().order_by('id')
+    registro_ventas = RegistroVentas.objects.select_related('id_forma_pago', 'id_estado_venta').order_by('id')
+    context = {
+        'ventas': ventas,
+        'registro_ventas': registro_ventas,
+    }
+    template = loader.get_template('ventas.html')
+    return HttpResponse(template.render(context, request))
+
 def ingresar_cliente(request):
     if request.method == 'POST':
         form = IngresarClientesForm(request.POST)
@@ -48,7 +58,44 @@ def ingresar_cliente(request):
         form = IngresarClientesForm()
         
     return render(request, 'ingresar_cliente.html', {'form': form})
+
+def ingresar_venta(request):
+    if request.method == 'POST':
+        form = IngresarVentaForm(request.POST)
+        if form.is_valid():
+            cedula_cliente = form.cleaned_data['cedula_cliente']
+            productos_comprados = form.cleaned_data['productos_comprados']
+            forma_pago = form.cleaned_data['forma_pago']
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL ingresar_venta(%s, %s::jsonb, %s)
+                """, [cedula_cliente, productos_comprados, forma_pago])
+                
+            return redirect('videojuegos:ventas')
+    else:
+        form = IngresarVentaForm()
         
+    return render(request, 'ingresar_venta.html', {'form': form})
+        
+def ingresar_catalogo(request):
+    if request.method == 'POST':
+        form = IngresarCatalogoForm(request.POST)
+        if form.is_valid():
+            catalogo = form.cleaned_data['catalogo']
+            item_catalogo = form.cleaned_data['item_catalogo']
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL ingresar_catalogo(%s, %s)
+                """, [catalogo, item_catalogo])
+                
+            return redirect('videojuegos:catalogos')
+    else:
+        form = IngresarCatalogoForm()
+        
+    return render(request, 'ingresar_catalogo.html', {'form': form})
+
 def actualizar_cliente(request, cedula):
     cliente = get_object_or_404(Clientes, cedula=cedula)
     
@@ -82,6 +129,34 @@ def actualizar_cliente(request, cedula):
         })
         
     return render(request, 'actualizar_cliente.html', {'form': form})
+
+def actualizar_catalogo(request, id):
+    catalogos = get_object_or_404(Catalogos, id = id)
+    
+    if request.method == 'POST':
+        form = ActualizarCatalogoForm(request.POST, initial={
+            'id': catalogos.id,
+            'catalogo': catalogos.catalogo,
+            'item_catalogo': catalogos.item_catalogo,
+        })
+        if form.is_valid():
+            catalogo = form.cleaned_data['catalogo']
+            item_catalogo = form.cleaned_data['item_catalogo']
+            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL actualizar_catalogo(%s, %s, %s)
+                """, [id, catalogo, item_catalogo])
+                
+            return redirect('videojuegos:catalogos')
+    else:
+        form = ActualizarCatalogoForm(initial={
+            'id': catalogos.id,
+            'catalogo': catalogos.catalogo,
+            'item_catalogo': catalogos.item_catalogo,
+        })
+    
+    return render(request, 'actualizar_catalogo.html', {'form': form})
 
 def consultar_cliente(request):
     cedula = request.GET.get('cedula', '')
@@ -124,6 +199,65 @@ def consultar_cliente(request):
 
     return render(request, 'consultar_cliente.html', context)
 
+def consultar_venta(request):
+    cedula = request.GET.get('cedula_cliente', '')
+    venta_info = []
+    mensaje = 'No se encontró ninguna venta'
+    try:
+        if cedula:
+            with connection.cursor() as cursor:
+                cursor.execute("CALL consultar_ventas(%s)", [cedula])
+                conn = cursor.connection
+                conn.poll()
+                notices = conn.notices
+                
+                # Regular expression to match each notice
+                notice_pattern = re.compile(
+                    r'ID:\s*(\d+)\s*\|\s*Cédula:\s*(\S+)\s*\|\s*Fecha de compra:\s*(\d{4}-\d{2}-\d{2})\s*\|\s*Forma de pago:\s*(.*?)\nProductos Comprados:\n((?:Producto \d+ - ID: \d+, Cantidad: \d+\n?)+)?',
+                    re.DOTALL
+                )
+
+                for notice in notices:
+                    matches = notice_pattern.finditer(notice)
+
+                    for match in matches:
+                        productos_comprados = match.group(5)
+                        productos = []
+
+                        if productos_comprados:
+                            productos_list = productos_comprados.strip().split('\n')
+                            for producto in productos_list:
+                                prod_match = re.match(
+                                    r'Producto (\d+) - ID: (\d+), Cantidad: (\d+)',
+                                    producto
+                                )
+                                if prod_match:
+                                    productos.append({
+                                        'numero': prod_match.group(1),
+                                        'id': prod_match.group(2),
+                                        'cantidad': prod_match.group(3),
+                                    })
+
+                        venta_info.append({
+                            'id': match.group(1),
+                            'cedula': match.group(2),
+                            'fecha': match.group(3),
+                            'forma_pago': match.group(4).strip(),
+                            'productos': productos,
+                        })
+                if not venta_info:
+                    mensaje = 'No se encontraron ventas para esta cédula.'
+                
+    except Exception as e:
+        mensaje = str(e)
+        
+    context = {
+        'venta_info': venta_info,
+        'mensaje': mensaje,
+    } 
+    
+    return render(request, 'consultar_venta.html', context)
+
 
 def ingresar_inventario(request):
     if request.method == 'POST':
@@ -145,11 +279,20 @@ def ingresar_inventario(request):
             return redirect('videojuegos:inventario')
     else:
         form = IngresarInventarioForm()
-        
-    return render(request, 'ingresar_inventario.html', {'form': form})
+
+    formatos = Catalogos.objects.filter(id_raiz=1)
+    generos = Catalogos.objects.filter(id_raiz=4)
+    plataformas = Catalogos.objects.filter(id_raiz=11)
+
+    return render(request, 'ingresar_inventario.html', {
+        'form': form,
+        'formatos': formatos,
+        'generos': generos,
+        'plataformas': plataformas
+    })
 
 def actualizar_inventario(request, codigo_producto):
-    inventario = get_object_or_404(Inventario, codigo_producto = codigo_producto)
+    inventario = get_object_or_404(Inventario, codigo_producto=codigo_producto)
     
     if request.method == 'POST':
         form = ActualizarInventarioForm(request.POST, initial={
@@ -188,9 +331,13 @@ def actualizar_inventario(request, codigo_producto):
             'precio': inventario.precio,
             'stock': inventario.stock,
         })
-    
-    return render(request, 'actualizar_inventario.html', {'form': form})
+        
+    return render(request, 'actualizar_inventario.html', {
+        'form': form
+    })
 
+
+    
 def consultar_inventario(request):
     codigo_producto = request.GET.get('codigo_producto', '')
     inventario_info = None
@@ -233,48 +380,26 @@ def consultar_inventario(request):
     }
 
     return render(request, 'consultar_inventario.html', context)
-def ingresar_catalogo(request):
-    if request.method == 'POST':
-        form = IngresarCatalogoForm(request.POST)
-        if form.is_valid():
-            catalogo = form.cleaned_data['catalogo']
-            item_catalogo = form.cleaned_data['item_catalogo']
 
-            with connection.cursor() as cursor:
-                cursor.execute("""
-                    CALL ingresar_catalogo(%s, %s)
-                """, [catalogo, item_catalogo])
-                
-            return redirect('videojuegos:catalogos')
-    else:
-        form = IngresarCatalogoForm()
-        
-    return render(request, 'ingresar_catalogo.html', {'form': form})
 
-def actualizar_catalogo(request, id):
-    catalogo = get_object_or_404(Catalogos, id = id)
+def detalles_venta(request, id):
+    registro_venta = get_object_or_404(RegistroVentas, id=id)
+    venta = registro_venta.id_productos_vendidos
     
-    if request.method == 'POST':
-        form = ActualizarCatalogoForm(request.POST, initial={
-            'id': catalogo.id,
-            'catalogo': catalogo.catalogo,
-            'item_catalogo': catalogo.item_catalogo,
-        })
-        if form.is_valid():
-            catalogo = form.cleaned_data['catalogo']
-            item_catalogo = form.cleaned_data['item_catalogo']
-            
-            with connection.cursor() as cursor:
-                cursor.execute("""
-                    CALL actualizar_catalogo(%s, %s)
-                """, [id, catalogo, item_catalogo])
-                
-            return redirect('videojuegos:catalogos')
-    else:
-        form = ActualizarCatalogoForm(initial={
-            'id': catalogo.id,
-            'catalogo': catalogo.catalogo,
-            'item_catalogo': catalogo.item_catalogo,
-        })
-    
-    return render(request, 'actualizar_catalogo.html', {'form': form})
+    productos = []
+    for i in range(1, 6):  # There are up to 5 products
+        producto = getattr(venta, f'id_producto_{i}')
+        cantidad = getattr(venta, f'cantidad_producto_{i}')
+        if producto:
+            productos.append({
+                'producto': producto,
+                'cantidad': cantidad,
+            })
+
+    context = {
+        'venta': venta,
+        'registro_venta': registro_venta,
+        'productos': productos,
+    }
+
+    return render(request, 'detalles_venta.html', context)

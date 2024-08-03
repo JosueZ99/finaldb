@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Ventas{% endblock title %}
+
+{% block content %}
+
+<div class="container-md">
+    <h2 class="mb-3 text-center">Lista de Ventas</h2>
+    <a href="{% url 'videojuegos:ingresar_venta' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
+    <a href="{% url 'videojuegos:consultar_venta' %}" class="btn btn-primary mb-4">Consultar</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>C&eacute;dula cliente</th>
+                <th>Fecha</th>
+                <th>Forma de Pago</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>
+                    {% for registro in registro_ventas %}
+                    {% if registro.id_productos_vendidos.id == venta.id %}
+                        {{ registro.id }}
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ venta.id_cliente.cedula }}</td>
+                <td>{{ venta.fecha }}</td>
+                <td>
+                    {% for registro in registro_ventas %}
+                        {% if registro.id_productos_vendidos.id == venta.id %}
+                            {{ registro.id_forma_pago.item_catalogo }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{% for registro in registro_ventas %}
+                        {% if registro.id_productos_vendidos.id == venta.id %}
+                            <a href="detalles/{{registro.id}}" class="btn btn-primary"><i class="fa-solid fa-eye"></i></a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

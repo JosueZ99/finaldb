@@ -1,75 +1,86 @@
 {% extends "base.html" %}
 
-{% block title %} Ingresar Inventario{% endblock title %}
+{% block title %}Ingresar Inventario{% endblock title %}
+
 {% block content %}
-
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="{% url "videojuegos:index" %}">Home</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Clientes</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:inventario" %}">Inventario</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Ventas</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:catalogos" %}">Cat&aacute;logos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
 <div class="container-md">
     <h2 class="text-center mb-4">Ingresar Inventario</h2>
+
     <div class="card px-4 pt-4 shadow-sm">
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="id_nombre" class="form-label">Nombre del Videojuego</label>
-                    <input type="text" name="nombre" id="id_nombre" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_nombre" class="col-sm-3 col-form-label">Nombre del Videojuego</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="nombre" id="id_nombre" class="form-control" value="{{ form.nombre.value|default_if_none:''}}">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_formato" class="form-label">Formato</label>
-                    <input type="text" name="formato" id="id_formato" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_formato" class="col-sm-3 col-form-label">Formato</label>
+                    <div class="col-sm-9">
+                        <select name="formato" id="id_formato" class="form-select">
+                            {% for choice in form.formato.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.formato.value == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_genero" class="form-label">G&eacute;nero</label>
-                    <input type="text" name="genero" id="id_genero" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_genero" class="col-sm-3 col-form-label">Género</label>
+                    <div class="col-sm-9">
+                        <select name="genero" id="id_genero" class="form-select">
+                            {% for choice in form.genero.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.genero.value == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_plataforma" class="form-label">Plataforma</label>
-                    <input type="text" name="plataforma" id="id_plataforma" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_plataforma" class="col-sm-3 col-form-label">Plataforma</label>
+                    <div class="col-sm-9">
+                        <select name="plataforma" id="id_plataforma" class="form-select">
+                            {% for choice in form.plataforma.field.choices %}
+                                <option value="{{ choice.0 }}" {% if form.plataforma.value == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_ano_lanzamiento" class="form-label">Año de Lanzamiento</label>
-                    <input type="number" name="ano_lanzamiento" id="id_ano_lanzamiento" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_ano_lanzamiento" class="col-sm-3 col-form-label">Año de Lanzamiento</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="ano_lanzamiento" id="id_ano_lanzamiento" class="form-control" value="{{ form.ano_lanzamiento.value }}">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_precio" class="form-label">Precio</label>
-                    <input type="number" name="precio" id="id_precio" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_precio" class="col-sm-3 col-form-label">Precio</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="precio" id="id_precio" class="form-control" value="{{ form.precio.value }}" step=".01">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="id_stock" class="form-control">
+
+                <div class="row mb-3">
+                    <label for="id_stock" class="col-sm-3 col-form-label">Stock</label>
+                    <div class="col-sm-9">
+                        <input type="number" name="stock" id="id_stock" class="form-control" value="{{ form.stock.value }}">
+                    </div>
                 </div>
+
                 <button type="submit" class="btn btn-primary mt-3">Guardar</button>
             </form>
         </div>
     </div>
-    <p></p>
 </div>
-
 {% endblock content %}

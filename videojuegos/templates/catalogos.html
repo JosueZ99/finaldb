@@ -1,61 +1,37 @@
 {% extends "base.html" %}
-{% block title %}Lista de Catalogos{% endblock title %}
+
+{% block title %}Lista de Catálogos{% endblock title %}
 
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
+<div class="container-md">
+    <h2 class="mb-3 text-center">Lista de Catálogos</h2>
+    <a href="{% url 'videojuegos:ingresar_catalogo' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
 
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="{% url "videojuegos:index" %}">Home</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Clientes</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:inventario" %}">Inventario</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Ventas</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:catalogos" %}">Cat&aacute;logos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-<div class="container-fluid">
-    <h2 class="mb-3 text-center">Lista de Cat&aacute;logos</h2>
-    <a href="{% url 'videojuegos:insertar' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Cat&aacute;logo</th>
-                <th>Item_Cat&aacute;logo</th>
-                <th>ID Raiz</th>
+                <th>Catálogo</th>
+                <th>Item_Catálogo</th>
+                <th>ID Raíz</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for catalogo in catalogos %}
             <tr>
                 <td>{{ catalogo.id }}</td>
-                <td>{{ catalogo.catalogo }}</td>
-                <td>{{ catalogo.item_catalogo }}</td>
-                <td>{{ catalogo.id_raiz }}</td>
-                <td><a href = "actualizar/{{catalogo.id}}" class="btn btn-primary">
-					<i class="fa-solid fa-pencil"></i>
-				</a></td>
+                <td>{{ catalogo.catalogo|default:"" }}</td>
+                <td>{{ catalogo.item_catalogo|default:"" }}</td>
+                <td>{{ catalogo.id_raiz|default:"" }}</td>
+                <td><a href="actualizar/{{ catalogo.id }}" class="btn btn-primary">
+                    <i class="fa-solid fa-pencil"></i>
+                </a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
 {% endblock content %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles de Venta{% endblock title %}
+
+{% block content %}
+<div class="container-md">
+    <h2 class="mb-3 text-center">Detalles de Venta</h2>
+    <div class="card p-4 shadow-sm">
+        <div class="card-body">
+            <p><strong>ID de la venta:</strong> {{ registro_venta.id }}</p>
+            <p><strong>Cédula Cliente:</strong> {{ venta.id_cliente.cedula }}</p>
+            <p><strong>Fecha:</strong> {{ venta.fecha }}</p>
+            <p><strong>Forma de Pago:</strong> {{ registro_venta.id_forma_pago.item_catalogo }}</p>
+            <p><strong>Estado de Venta:</strong> {{ registro_venta.id_estado_venta.item_catalogo }}</p>
+
+            <p class="mt-4"><strong>Productos Comprados:</strong></p>
+            {% if productos %}
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>ID de producto</th>
+                        <th>Nombre del Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in productos %}
+                    <tr>
+                        <td>{{ item.producto.id }}</td>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>{{ item.cantidad }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No hay productos registrados.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

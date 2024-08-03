@@ -3,34 +3,6 @@
 {% block title %}Consultar Cliente{% endblock title %}
 
 {% block content %}
-
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" href="{% url 'videojuegos:index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'videojuegos:clientes' %}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Inventario</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Ventas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Catálogos</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
 <div class="container-md">
     <h2 class="text-center mb-4">Consultar Cliente</h2>
     <div class="card p-4 shadow-sm">
@@ -38,23 +10,57 @@
             <form method="GET" action="{% url 'videojuegos:consultar_cliente' %}">
                 <div class="mb-3">
                     <label for="cedula" class="form-label">Número de Cédula:</label>
-                    <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese el número de cédula" required>
+                    <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese el número de cédula" value="{{ request.GET.cedula }}" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </form>
 
             {% if cliente_info %}
-                <p class="mt-4"><strong>Información del Cliente:</strong></p>
-                <ul>
-                    <li><strong>ID:</strong> {{ cliente_info.id }}</li>
-                    <li><strong>Cédula:</strong> {{ cliente_info.cedula }}</li>
-                    <li><strong>Apellidos y Nombres:</strong> {{ cliente_info.apellidos_nombres }}</li>
-                    <li><strong>Correo:</strong> {{ cliente_info.correo }}</li>
-                    <li><strong>Provincia:</strong> {{ cliente_info.provincia }}</li>
-                    <li><strong>Dirección:</strong> {{ cliente_info.direccion }}</li>
-                    <li><strong>Estado Cliente:</strong> {{ cliente_info.estado }}</li>
-                    <li><strong>Teléfono:</strong> {{ cliente_info.telefono }}</li>
-                </ul>
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Información del Cliente
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>ID</th>
+                                        <td>{{ cliente_info.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cédula</th>
+                                        <td>{{ cliente_info.cedula }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Apellidos y Nombres</th>
+                                        <td>{{ cliente_info.apellidos_nombres }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Correo</th>
+                                        <td>{{ cliente_info.correo }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Provincia</th>
+                                        <td>{{ cliente_info.provincia }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dirección</th>
+                                        <td>{{ cliente_info.direccion }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estado Cliente</th>
+                                        <td>{{ cliente_info.estado }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Teléfono</th>
+                                        <td>{{ cliente_info.telefono }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             {% else %}
                 <p>{{ mensaje }}</p>
             {% endif %}
@@ -62,5 +68,4 @@
     </div>
     <p></p>
 </div>
-
 {% endblock content %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Consultar Venta{% endblock title %}
+
+{% block content %}
+<div class="container-md">
+    <h2 class="text-center mb-4">Consultar Venta</h2>
+    <div class="card px-4 pt-4 shadow-sm">
+        <div class="card-body">
+            <form method="GET" action="{% url 'videojuegos:consultar_venta' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="cedula_cliente" class="form-label">Cédula del cliente</label>
+                    <input type="text" name="cedula_cliente" id="cedula_cliente" class="form-control" placeholder="Ingrese la cédula del cliente" value="{{ request.GET.cedula_cliente }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+
+            {% if venta_info %}
+                <div class="mt-4">
+                    <h4>Información de la Venta:</h4>
+                    {% for venta in venta_info %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Venta ID: {{ venta.id }}</h5>
+                                <p><strong>Cédula del Cliente:</strong> {{ venta.cedula }}</p>
+                                <p><strong>Fecha:</strong> {{ venta.fecha }}</p>
+                                <p><strong>Forma de Pago:</strong> {{ venta.forma_pago }}</p>
+                                <h6>Productos Comprados:</h6>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>ID</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for producto in venta.productos %}
+                                            <tr>
+                                                <td>Producto {{ producto.numero }}</td>
+                                                <td>{{ producto.id }}</td>
+                                                <td>{{ producto.cantidad }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>{{ mensaje }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

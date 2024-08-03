@@ -3,53 +3,24 @@
 {% block title %} Ingresar Catalogo{% endblock title %}
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarText">
-
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="{% url "videojuegos:index" %}">Home</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Clientes</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:inventario" %}">Inventario</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:clientes" %}">Ventas</a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link text-white" href="{% url "videojuegos:catalogos" %}">Cat&aacute;logos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
 <div class="container-md">
-    <h2 class="text-center mb-4">Ingresar Cat&aacute;logo</h2>
-    <div class="card px-4 pt-4 shadow-sm">
+    <h2 class="text-center mb-4">Ingresar Catálogo</h2>
+    <div class="card p-4 shadow-sm">
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="id_catalogo" class="form-label">Cat&aacute;logo</label>
-                    <input type="text" name="catalogo" id="id_catalogo" class="form-control">
+                    <label for="catalogo" class="form-label">Título del Catálogo:</label>
+                    <input type="text" class="form-control" id="catalogo" name="catalogo" required>
                 </div>
                 <div class="mb-3">
-                    <label for="id_item_catalogo" class="form-label">Item Cat&aacute;logo</label>
-                    <input type="text" name="item_catalogo" id="id_item_catalogo" class="form-control">
+                    <label for="item_catalogo" class="form-label">Item del Catálogo:</label>
+                    <input type="text" class="form-control" id="item_catalogo" name="item_catalogo" required>
                 </div>
-                <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+                <button type="submit" class="btn btn-primary">Registrar</button>
             </form>
         </div>
     </div>
-    <p></p>
 </div>
 
 {% endblock content %}
