@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Lista de Productos{% endblock title %}
+{% block title %}Lista de Catalogos{% endblock title %}
 
 {% block content %}
 
@@ -32,38 +32,25 @@
   </nav>
 
 <div class="container-fluid">
-    <h2 class="mb-3 text-center">Lista de Productos</h2>
-    <a href="{% url 'videojuegos:ingresar' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
-    <a href="{% url 'videojuegos:consultar_inventario' %}" class="btn btn-primary mb-4">Consultar</a>
+    <h2 class="mb-3 text-center">Lista de Cat&aacute;logos</h2>
+    <a href="{% url 'videojuegos:insertar' %}" class="btn btn-primary mb-4">Añadir nuevo</a>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Formato</th>
-                <th>G&eacute;nero</th>
-                <th>Plataforma</th>
-                <th>Año de lanzamiento</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Estado Producto</th>
-                <th>Codigo Producto</th>
+                <th>Cat&aacute;logo</th>
+                <th>Item_Cat&aacute;logo</th>
+                <th>ID Raiz</th>
             </tr>
         </thead>
         <tbody>
-            {% for producto in inventario %}
+            {% for catalogo in catalogos %}
             <tr>
-                <td>{{ producto.id }}</td>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.id_formato }}</td>
-                <td>{{ producto.id_genero }}</td>
-                <td>{{ producto.id_plataforma }}</td>
-                <td>{{ producto.ano_lanzamiento }}</td>
-                <td>{{ producto.precio }}</td>
-                <td>{{ producto.stock}}</td>
-                <td>{{ producto.id_estado_producto}}</td>
-                <td>{{ producto.codigo_producto}}</td>
-                <td><a href = "actualizar/{{producto.codigo_producto}}" class="btn btn-primary">
+                <td>{{ catalogo.id }}</td>
+                <td>{{ catalogo.catalogo }}</td>
+                <td>{{ catalogo.item_catalogo }}</td>
+                <td>{{ catalogo.id_raiz }}</td>
+                <td><a href = "actualizar/{{catalogo.id}}" class="btn btn-primary">
 					<i class="fa-solid fa-pencil"></i>
 				</a></td>
             </tr>

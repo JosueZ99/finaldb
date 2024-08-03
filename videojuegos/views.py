@@ -4,8 +4,8 @@ from django.template import loader
 from django.db import connection
 import psycopg2, re
 
-from .models import Clientes, Inventario
-from .forms import IngresarClientesForm, ActualizarClientesForm, IngresarInventarioForm, ActualizarInventarioForm
+from .models import Clientes, Inventario, Catalogos
+from .forms import IngresarClientesForm, ActualizarClientesForm, IngresarInventarioForm, ActualizarInventarioForm, IngresarCatalogoForm, ActualizarCatalogoForm
 
 # Create your views here.
 def index(request):
@@ -22,6 +22,11 @@ def inventario(request):
     inventario = Inventario.objects.order_by('id')
     template = loader.get_template('inventario.html')
     return HttpResponse(template.render({'inventario': inventario}, request))
+
+def catalogos(request):
+    catalogos = Catalogos.objects.order_by('id')
+    template = loader.get_template('catalogos.html')
+    return HttpResponse(template.render({'catalogos': catalogos}, request))
 
 def ingresar_cliente(request):
     if request.method == 'POST':
@@ -228,3 +233,48 @@ def consultar_inventario(request):
     }
 
     return render(request, 'consultar_inventario.html', context)
+def ingresar_catalogo(request):
+    if request.method == 'POST':
+        form = IngresarCatalogoForm(request.POST)
+        if form.is_valid():
+            catalogo = form.cleaned_data['catalogo']
+            item_catalogo = form.cleaned_data['item_catalogo']
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL ingresar_catalogo(%s, %s)
+                """, [catalogo, item_catalogo])
+                
+            return redirect('videojuegos:catalogos')
+    else:
+        form = IngresarCatalogoForm()
+        
+    return render(request, 'ingresar_catalogo.html', {'form': form})
+
+def actualizar_catalogo(request, id):
+    catalogo = get_object_or_404(Catalogos, id = id)
+    
+    if request.method == 'POST':
+        form = ActualizarCatalogoForm(request.POST, initial={
+            'id': catalogo.id,
+            'catalogo': catalogo.catalogo,
+            'item_catalogo': catalogo.item_catalogo,
+        })
+        if form.is_valid():
+            catalogo = form.cleaned_data['catalogo']
+            item_catalogo = form.cleaned_data['item_catalogo']
+            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL actualizar_catalogo(%s, %s)
+                """, [id, catalogo, item_catalogo])
+                
+            return redirect('videojuegos:catalogos')
+    else:
+        form = ActualizarCatalogoForm(initial={
+            'id': catalogo.id,
+            'catalogo': catalogo.catalogo,
+            'item_catalogo': catalogo.item_catalogo,
+        })
+    
+    return render(request, 'actualizar_catalogo.html', {'form': form})
