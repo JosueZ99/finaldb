@@ -31,13 +31,37 @@
     </div>
   </nav>
 
-<div class="container bg-info text-center">
-    <h2> Actualizar cliente</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+<div class="container-md">
+    <h2 class="text-center mb-4">Actualizar Cliente</h2>
+    <div class="card px-4 pt-4 shadow-sm">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_cedula" class="form-label">Cédula</label>
+                    <input type="text" name="cedula" id="id_cedula" value="{{ form.cedula.value }}" class="form-control" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="id_apellidos_nombres" class="form-label">Apellidos y Nombres</label>
+                    <input type="text" name="apellidos_nombres" id="id_apellidos_nombres" value="{{ form.apellidos_nombres.value }}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_correo" class="form-label">Correo Electrónico</label>
+                    <input type="text" name="correo" id="id_correo" value="{{ form.correo.value }}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_direccion" class="form-label">Dirección</label>
+                    <input type="text" name="direccion" id="id_direccion" value="{{ form.direccion.value }}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="id_telefono" class="form-label">Teléfono</label>
+                    <input type="text" name="telefono" id="id_telefono" value="{{ form.telefono.value }}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+            </form>
+        </div>
+    </div>
+    <p></p>
 </div>
 
 {% endblock content %}
