@@ -5,5 +5,7 @@ from . import views
 app_name = "videojuegos"
 urlpatterns = [
     path("", views.index, name="index"),
-    path('registro/', views.ingresar_o_actualizar_cliente, name='registro'),
+    path("clientes/", views.clientes, name="clientes"),
+    path('clientes/registro/', views.ingresar_cliente, name='registro'),
+    path('clientes/actualizacion/', views.actualizar_cliente, name='actualizacion'),
 ]
