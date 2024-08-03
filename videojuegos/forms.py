@@ -32,3 +32,12 @@ class ActualizarInventarioForm(forms.Form):
     ano_lanzamiento = forms.IntegerField(label='Año de Lanzamiento')
     precio = forms.FloatField(label='Precio')
     stock = forms.IntegerField(label='Stock')
+    
+class IngresarCatalogoForm(forms.Form):
+    catalogo = forms.CharField(label='Catalogo', max_length=100)
+    item_catalogo = forms.CharField(label='Item Catalogo', max_length=100)
+    
+class ActualizarCatalogoForm(forms.Form):
+    id = forms.IntegerField(label='ID')
+    catalogo = forms.CharField(label='Catalogo', max_length=100)
+    item_catalogo = forms.CharField(label='Item Catalogo', max_length=100)

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Ingresar Inventario{% endblock title %}
+{% block title %} Ingresar Catalogo{% endblock title %}
 {% block content %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary mb-4">
@@ -32,38 +32,18 @@
   </nav>
 
 <div class="container-md">
-    <h2 class="text-center mb-4">Ingresar Inventario</h2>
+    <h2 class="text-center mb-4">Ingresar Cat&aacute;logo</h2>
     <div class="card px-4 pt-4 shadow-sm">
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="id_nombre" class="form-label">Nombre del Videojuego</label>
-                    <input type="text" name="nombre" id="id_nombre" class="form-control">
+                    <label for="id_catalogo" class="form-label">Cat&aacute;logo</label>
+                    <input type="text" name="catalogo" id="id_catalogo" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label for="id_formato" class="form-label">Formato</label>
-                    <input type="text" name="formato" id="id_formato" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="id_genero" class="form-label">G&eacute;nero</label>
-                    <input type="text" name="genero" id="id_genero" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="id_plataforma" class="form-label">Plataforma</label>
-                    <input type="text" name="plataforma" id="id_plataforma" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="id_ano_lanzamiento" class="form-label">Año de Lanzamiento</label>
-                    <input type="number" name="ano_lanzamiento" id="id_ano_lanzamiento" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="id_precio" class="form-label">Precio</label>
-                    <input type="number" name="precio" id="id_precio" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="id_stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="id_stock" class="form-control">
+                    <label for="id_item_catalogo" class="form-label">Item Cat&aacute;logo</label>
+                    <input type="text" name="item_catalogo" id="id_item_catalogo" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Guardar</button>
             </form>
