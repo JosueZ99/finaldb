@@ -28,13 +28,14 @@ class Clientes(models.Model):
 
 class Inventario(models.Model):
     nombre = models.CharField(max_length=100)
-    id_formato = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='formatos')
-    id_genero = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='generos')
-    id_plataforma = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='plataformas')
+    id_formato = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='formatos', db_column='id_formato')
+    id_genero = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='generos', db_column='id_genero')
+    id_plataforma = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='plataformas', db_column='id_plataforma')
     ano_lanzamiento = models.IntegerField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    id_estado_producto = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_productos')
+    id_estado_producto = models.ForeignKey(Catalogos, on_delete=models.CASCADE, related_name='estados_productos', db_column='id_estado_producto')
+    codigo_producto = models.CharField(max_length=10, null= True)
     
     def __str__(self):
         return f'{self.nombre}'

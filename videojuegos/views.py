@@ -4,7 +4,7 @@ from django.template import loader
 from django.db import connection
 
 from .models import Clientes, Inventario
-from .forms import IngresarClientesForm, ActualizarClientesForm
+from .forms import IngresarClientesForm, ActualizarClientesForm, IngresarInventarioForm, ActualizarInventarioForm
 
 # Create your views here.
 def index(request):
@@ -99,3 +99,46 @@ def ingresar_inventario(request):
         form = IngresarInventarioForm()
         
     return render(request, 'ingresar_inventario.html', {'form': form})
+
+def actualizar_inventario(request, codigo_producto):
+    inventario = get_object_or_404(Inventario, codigo_producto = codigo_producto)
+    
+    if request.method == 'POST':
+        form = ActualizarInventarioForm(request.POST, initial={
+            'codigo_producto': inventario.codigo_producto,
+            'nombre': inventario.nombre,
+            'formato': inventario.id_formato,
+            'genero': inventario.id_genero,
+            'plataforma': inventario.id_plataforma,
+            'ano_lanzamiento': inventario.ano_lanzamiento,
+            'precio': inventario.precio,
+            'stock': inventario.stock,
+        })
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            formato = form.cleaned_data['formato']
+            genero = form.cleaned_data['genero']
+            plataforma = form.cleaned_data['plataforma']
+            ano_lanzamiento = form.cleaned_data['ano_lanzamiento']
+            precio = form.cleaned_data['precio']
+            stock = form.cleaned_data['stock']
+            
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    CALL actualizar_inventario(%s, %s, %s, %s, %s, %s, %s, %s)
+                """, [codigo_producto, nombre, formato, genero, plataforma, ano_lanzamiento, precio, stock])
+                
+            return redirect('videojuegos:inventario')
+    else:
+        form = ActualizarInventarioForm(initial={
+            'codigo_producto': inventario.codigo_producto,
+            'nombre': inventario.nombre,
+            'formato': inventario.id_formato,
+            'genero': inventario.id_genero,
+            'plataforma': inventario.id_plataforma,
+            'ano_lanzamiento': inventario.ano_lanzamiento,
+            'precio': inventario.precio,
+            'stock': inventario.stock,
+        })
+    
+    return render(request, 'actualizar_inventario.html', {'form': form})
