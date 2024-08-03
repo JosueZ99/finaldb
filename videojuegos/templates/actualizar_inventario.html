@@ -59,15 +59,15 @@
                 </div>
                 <div class="mb-3">
                     <label for="id_ano_lanzamiento" class="form-label">Año de Lanzamiento</label>
-                    <input type="text" name="ano_lanzamiento" id="id_ano_lanzamiento" value="{{ form.ano_lanzamiento.value }}" class="form-control">
+                    <input type="number" name="ano_lanzamiento" id="id_ano_lanzamiento" value="{{ form.ano_lanzamiento.value }}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="id_precio" class="form-label">Precio</label>
-                    <input type="text" name="precio" id="id_precio" value="{{ form.precio.value }}" class="form-control">
+                    <input type="number" step=".01" name="precio" id="id_precio" value="{{ form.precio.value }}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="id_stock" class="form-label">Stock</label>
-                    <input type="text" name="stock" id="id_stock" value="{{ form.stock.value }}" class="form-control">
+                    <input type="number" name="stock" id="id_stock" value="{{ form.stock.value }}" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Guardar</button>
             </form>

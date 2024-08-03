@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Consultar Cliente{% endblock title %}
+{% block title %}Consultar Inventario{% endblock title %}
 
 {% block content %}
 
@@ -32,35 +32,39 @@
 </nav>
 
 <div class="container-md">
-    <h2 class="text-center mb-4">Consultar Cliente</h2>
+    <h2 class="text-center mb-4">Consultar Inventario</h2>
     <div class="card p-4 shadow-sm">
         <div class="card-body">
-            <form method="GET" action="{% url 'videojuegos:consultar_cliente' %}">
+            <form method="GET" action="{% url 'videojuegos:consultar_inventario' %}">
                 <div class="mb-3">
-                    <label for="cedula" class="form-label">Número de Cédula:</label>
-                    <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese el número de cédula" required>
+                    <label for="codigo_producto" class="form-label">Código:</label>
+                    <input type="text" class="form-control" id="codigo_producto" name="codigo_producto" placeholder="Ingrese el código del videojuego" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </form>
+            
 
-            {% if cliente_info %}
-                <p class="mt-4"><strong>Información del Cliente:</strong></p>
+            {% if inventario_info %}
+                <p class="mt-4"><strong>Información del Videojuego:</strong></p>
                 <ul>
-                    <li><strong>ID:</strong> {{ cliente_info.id }}</li>
-                    <li><strong>Cédula:</strong> {{ cliente_info.cedula }}</li>
-                    <li><strong>Apellidos y Nombres:</strong> {{ cliente_info.apellidos_nombres }}</li>
-                    <li><strong>Correo:</strong> {{ cliente_info.correo }}</li>
-                    <li><strong>Provincia:</strong> {{ cliente_info.provincia }}</li>
-                    <li><strong>Dirección:</strong> {{ cliente_info.direccion }}</li>
-                    <li><strong>Estado Cliente:</strong> {{ cliente_info.estado }}</li>
-                    <li><strong>Teléfono:</strong> {{ cliente_info.telefono }}</li>
+                    <li><strong>ID:</strong> {{ inventario_info.id }}</li>
+                    <li><strong>Código de producto:</strong> {{ inventario_info.codigo_producto }}</li>
+                    <li><strong>Nombre:</strong> {{ inventario_info.nombre }}</li>
+                    <li><strong>Formato:</strong> {{ inventario_info.formato }}</li>
+                    <li><strong>G&eacute;nero:</strong> {{ inventario_info.genero }}</li>
+                    <li><strong>Plataforma:</strong> {{ inventario_info.plataforma }}</li>
+                    <li><strong>A&ntilde;o de Lanzamiento:</strong> {{ inventario_info.ano_lanzamiento }}</li>
+                    <li><strong>Precio:</strong> {{ inventario_info.precio }}</li>
+                    <li><strong>Stock:</strong> {{ inventario_info.stock }}</li>
+                    <li><strong>Estado de Producto:</strong> {{ inventario_info.estado }}</li>
                 </ul>
             {% else %}
                 <p>{{ mensaje }}</p>
             {% endif %}
         </div>
     </div>
+
     <p></p>
 </div>
-
-{% endblock content %}
+    
+    {% endblock content %}
